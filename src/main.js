@@ -15,6 +15,9 @@ window.addEventListener("load",()=>{
     game.render(ctx)
     
     function animate(){
-        
+        ctx.clearRect(0,0,canvas.width,canvas.height)
+        game.render(ctx)
+        requestAnimationFrame(animate)
     }
+    animate()
 })
