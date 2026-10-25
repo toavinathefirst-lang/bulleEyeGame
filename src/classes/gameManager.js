@@ -1,14 +1,20 @@
 import { Player } from "./player"
-
+import { Obstacle } from "./obstacle"
 export class Game {
     /** @param {HTMLCanvasElement} canvas */
     constructor(canvas){
+        
         this.canvas = canvas
         this.width = canvas.width
         this.height = canvas.height
 
         this.mouse = { x: this.width*0.5, y: this.height*0.5, dx: 0, dy: 0, pressed: false }
         this.player = new Player(this)
+        this.numberOfObstacle =5
+        /**
+         * @type Obstacle[]
+         */
+        this.obstacles = []
 
         // position de la souris dans le repère du canvas, quelle que soit sa taille CSS
         const updatePos = (e) => {
@@ -30,5 +36,13 @@ export class Game {
     render(context){
         this.player.update()
         this.player.draw(context)
+        this.obstacles.forEach(obstacle=>{
+            obstacle.draw(context)
+        })
+    }
+    init(){
+        for(let i=0;i<this.numberOfObstacle;i++){
+            this.obstacles.push(new Obstacle(this))
+        }
     }
 }

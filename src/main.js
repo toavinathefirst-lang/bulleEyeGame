@@ -12,6 +12,7 @@ window.addEventListener("load",()=>{
     ctx.strokeStyle = "red"
     
     const game = new Game(canvas)
+    game.init()
     game.render(ctx)
     
     function animate(){

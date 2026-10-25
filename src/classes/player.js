@@ -7,8 +7,10 @@ export class Player {
      */
    constructor(game){
       this.game = game
-      this.collisionX = game.width * 0.5
-      this.collisionY = game.height * 0.5
+      this.collision = {
+        x:game.width * 0.5,
+        y: game.height * 0.5
+      }
       this.collisionRadius = 30
 
       this.angle = 0
@@ -24,7 +26,7 @@ export class Player {
     */
    draw(context){
     context.beginPath()
-    context.arc(this.collisionX, this.collisionY, this.collisionRadius, 0, Math.PI*2)
+    context.arc(this.collision.x, this.collision.y, this.collisionRadius, 0, Math.PI*2)
     context.save()
     context.globalAlpha = 0.5
     context.fill()
@@ -32,17 +34,17 @@ export class Player {
     context.stroke()
 
     context.beginPath()
-    context.moveTo(this.collisionX, this.collisionY)
+    context.moveTo(this.collision.x, this.collision.y)
     context.lineTo(
-        this.collisionX + Math.cos(this.angle) * this.lineLength,
-        this.collisionY + Math.sin(this.angle) * this.lineLength
+        this.collision.x + Math.cos(this.angle) * this.lineLength,
+        this.collision.y + Math.sin(this.angle) * this.lineLength
     )
     context.stroke()
    }  
   update(){
     const m = this.game.mouse
-    const dx = m.x - this.collisionX || 0
-    const dy = m.y - this.collisionY  || 0
+    const dx = m.x - this.collision.x || 0
+    const dy = m.y - this.collision.y  || 0
     const distance = Math.hypot(dx, dy)
 
     const maxSpeed = 15
@@ -53,8 +55,8 @@ export class Player {
         this.speed.x = (dx / distance) * speedModifier
         this.speed.y = (dy / distance) * speedModifier
 
-        this.collisionX += this.speed.x
-        this.collisionY += this.speed.y
+        this.collision.x += this.speed.x
+        this.collision.y += this.speed.y
 
         this.angle = Math.atan2(dy, dx)
     } else {
