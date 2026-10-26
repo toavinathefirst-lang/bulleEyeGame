@@ -41,8 +41,23 @@ export class Game {
         })
     }
     init(){
-        for(let i=0;i<this.numberOfObstacle;i++){
-            this.obstacles.push(new Obstacle(this))
+        let attempts = 0
+        while(this.obstacles.length <this.numberOfObstacle &&  attempts<150){
+            let testObstacle =new Obstacle(this)
+            let overlap=false
+            this.obstacles.forEach(obstacle=>{
+                const dx = testObstacle.collision.x - obstacle.collision.x
+                const dy = testObstacle.collision.y - obstacle.collision.y
+                const distance = Math.hypot(dy,dx)
+                const sumOfRadi =testObstacle.collisionRadius +obstacle.collisionRadius
+                if(distance<sumOfRadi){
+                    overlap=true
+                }          
+            })
+            if(!overlap){
+                this.obstacles.push(testObstacle)
+            }
+            attempts++
         }
     }
 }
