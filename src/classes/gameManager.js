@@ -7,10 +7,12 @@ export class Game {
         this.canvas = canvas
         this.width = canvas.width
         this.height = canvas.height
+        this.TOPMARGIN=260
 
         this.mouse = { x: this.width*0.5, y: this.height*0.5, dx: 0, dy: 0, pressed: false }
         this.player = new Player(this)
         this.numberOfObstacle =5
+        this.MAX_ATTEMPTS = 200
         /**
          * @type Obstacle[]
          */
@@ -42,19 +44,26 @@ export class Game {
     }
     init(){
         let attempts = 0
-        while(this.obstacles.length <this.numberOfObstacle &&  attempts<150){
+        while(this.obstacles.length <this.numberOfObstacle &&  attempts<this.MAX_ATTEMPTS){
             let testObstacle =new Obstacle(this)
             let overlap=false
             this.obstacles.forEach(obstacle=>{
                 const dx = testObstacle.collision.x - obstacle.collision.x
                 const dy = testObstacle.collision.y - obstacle.collision.y
                 const distance = Math.hypot(dy,dx)
-                const sumOfRadi =testObstacle.collisionRadius +obstacle.collisionRadius
+                const distanceBuffer = 100;
+                const sumOfRadi =testObstacle.collisionRadius +obstacle.collisionRadius+distanceBuffer
                 if(distance<sumOfRadi){
                     overlap=true
                 }          
             })
-            if(!overlap){
+            const margin = testObstacle.collisionRadius*2
+            if(!overlap &&  testObstacle.sprite.x>0 && 
+                testObstacle.sprite.x<this.width-testObstacle.width && 
+                testObstacle.collision.y>this.TOPMARGIN && testObstacle.collision.y < this.TOPMARGIN +margin &&
+                testObstacle.collision.y <this.height - margin
+            
+            ){
                 this.obstacles.push(testObstacle)
             }
             attempts++

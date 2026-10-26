@@ -23,14 +23,20 @@ export class Obstacle{
             x:this.collision.x - this.width*0.5,
             y:this.collision.y - this.height*0.5-70,
         }
+        this.frame= {
+            x:Math.floor(Math.random()*4),
+            y:Math.floor(Math.random()*3),
+        }
     }
     /**
     * 
     * @param {CanvasRenderingContext2D} context 
     */
     draw(context){
-        context.drawImage(this.image,0,0,this.spriteWidth,
-            this.spriteHeight,this.sprite.x,this.sprite.y,this.width,this.height)
+        context.drawImage(this.image,
+            this.frame.x*this.spriteWidth,this.frame.y*this.spriteHeight,
+            this.spriteWidth,this.spriteHeight,
+            this.sprite.x,this.sprite.y,this.width,this.height)
         context.beginPath()
         context.arc(this.collision.x, this.collision.y, this.collisionRadius, 0, Math.PI*2)
         context.save()
