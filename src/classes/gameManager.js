@@ -1,6 +1,7 @@
 import { Player } from "./player"
 import { Obstacle } from "./obstacle"
 
+
 export class Game {
     /** @param {HTMLCanvasElement} canvas */
     constructor(canvas) {
@@ -8,6 +9,7 @@ export class Game {
         this.width = canvas.width
         this.height = canvas.height
         this.TOPMARGIN = 260
+        this.debug = false
 
         this.mouse = { x: this.width * 0.5, y: this.height * 0.5, dx: 0, dy: 0, pressed: false }
         this.player = new Player(this)
@@ -31,6 +33,13 @@ export class Game {
         })
         window.addEventListener("mousedown", (e) => { updatePos(e); this.mouse.pressed = true })
         window.addEventListener("mouseup", (e) => { updatePos(e); this.mouse.pressed = false })
+        window.addEventListener("keydown",(e)=>{
+            if(e.key == "d"){
+                this.debug= !this.debug
+            }
+            
+            
+        })
     }
 
     /**

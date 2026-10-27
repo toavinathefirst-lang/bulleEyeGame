@@ -1,5 +1,6 @@
 import { Game } from "./gameManager";
 
+
 export class Player {
     /**
      * @param {Game} game
@@ -14,6 +15,7 @@ export class Player {
 
         this.angle = 0
         this.lineLength = 80
+        
         this.speed = {
             x: 0,
             y: 0
@@ -45,21 +47,25 @@ export class Player {
             this.spriteWidth, this.spriteHeight,
             this.sprite.x, this.sprite.y, this.width, this.height
         )
-        context.beginPath()
-        context.arc(this.collision.x, this.collision.y, this.collisionRadius, 0, Math.PI * 2)
-        context.save()
-        context.globalAlpha = 0.5
-        context.fill()
-        context.restore()
-        context.stroke()
 
-        context.beginPath()
-        context.moveTo(this.collision.x, this.collision.y)
-        context.lineTo(
-            this.collision.x + Math.cos(this.angle) * this.lineLength,
-            this.collision.y + Math.sin(this.angle) * this.lineLength
-        )
-        context.stroke()
+
+        if(this.game.debug){
+            context.beginPath()
+            context.arc(this.collision.x, this.collision.y, this.collisionRadius, 0, Math.PI * 2)
+            context.save()
+            context.globalAlpha = 0.5
+            context.fill()
+            context.restore()
+            context.stroke()
+
+            context.beginPath()
+            context.moveTo(this.collision.x, this.collision.y)
+            context.lineTo(
+                this.collision.x + Math.cos(this.angle) * this.lineLength,
+                this.collision.y + Math.sin(this.angle) * this.lineLength
+            )
+            context.stroke()
+        }
     }
 
     /**

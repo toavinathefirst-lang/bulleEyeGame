@@ -9,7 +9,7 @@ export class Obstacle{
      */
     constructor(game){
         this.game=game;
-         this.collisionRadius  = 90;
+         this.collisionRadius  = 40;
         this.collision = {
             x:this.collisionRadius + Math.random() * (this.game.width - this.collisionRadius*2),
             y:this.collisionRadius + Math.random() * (this.game.height - this.collisionRadius*2)
@@ -33,16 +33,18 @@ export class Obstacle{
     * @param {CanvasRenderingContext2D} context 
     */
     draw(context){
-        context.drawImage(this.image,
-            this.frame.x*this.spriteWidth,this.frame.y*this.spriteHeight,
-            this.spriteWidth,this.spriteHeight,
-            this.sprite.x,this.sprite.y,this.width,this.height)
-        context.beginPath()
-        context.arc(this.collision.x, this.collision.y, this.collisionRadius, 0, Math.PI*2)
-        context.save()
-        context.globalAlpha = 0.5
-        context.fill()
-        context.restore()
-        context.stroke()
+            context.drawImage(this.image,
+                this.frame.x*this.spriteWidth,this.frame.y*this.spriteHeight,
+                this.spriteWidth,this.spriteHeight,
+                this.sprite.x,this.sprite.y,this.width,this.height)
+            if(this.game.debug){
+                context.beginPath()
+                context.arc(this.collision.x, this.collision.y, this.collisionRadius, 0, Math.PI*2)
+                context.save()
+                context.globalAlpha = 0.5
+                context.fill()
+                context.restore()
+                context.stroke()
+            }
         }
 }
