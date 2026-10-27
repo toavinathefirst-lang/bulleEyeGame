@@ -52,7 +52,7 @@ export class Game {
         const dy = a.collision.y - b.collision.y
         const distance = Math.hypot(dy,dx)
         const sumOfRadi = a.collisionRadius + b.collisionRadius
-        return (distance <sumOfRadi)
+        return ([(distance <sumOfRadi),distance,sumOfRadi,dx,dy])
     }
     init(){
         let attempts = 0

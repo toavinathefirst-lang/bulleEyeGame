@@ -66,9 +66,14 @@ export class Player {
 
     //collision with obstacles
     this.game.obstacles.forEach(obstacle=>{
-      if(this.game.checkCollision(this,obstacle)){
-        console.log(this.game.checkCollision(this,obstacle));
-        
+      //destructive asssignement 
+      let [collision,distance,sumOfRadi,dx,dy] =this.game.checkCollision(this,obstacle)
+      if(collision){
+        const unit= {
+          x:dx/distance,y:dy/distance
+        }
+        this.collision.x=obstacle.collision.x+(sumOfRadi+1)*unit.x
+        this.collision.y=obstacle.collision.y+(sumOfRadi+1)*unit.y
       }
     })
   }
