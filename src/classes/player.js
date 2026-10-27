@@ -11,7 +11,7 @@ export class Player {
         x:game.width * 0.5,
         y: game.height * 0.5
       }
-      this.collisionRadius = 30
+      this.collisionRadius = 80
 
       this.angle = 0
       this.lineLength = 80
@@ -19,12 +19,32 @@ export class Player {
         x:0,
         y:0
       }
+      /**
+       * @type {HTMLImageElement}
+       */
+      this.image= document.querySelector("img#bull")
+      this.spriteWidth=255
+      this.spriteHeight = 255
+      this.width = this.spriteWidth
+      this.height = this.spriteHeight
+      this.source= {
+        x:0,
+        y:0,
+        w:this.spriteWidth,
+        h:this.spriteHeight
+      }
+      this.sprite ={
+        x:this.collision.x - this.width*0.5,
+        y:this.collision.y - this.height*0.5
+      }
   }
    /**
     * 
     * @param {CanvasRenderingContext2D} context 
     */
    draw(context){
+    context.drawImage(this.image,this.source.x,this.source.y,this.source.w,this.source.h,
+      this.sprite.x,this.sprite.y,this.width,this.height)
     context.beginPath()
     context.arc(this.collision.x, this.collision.y, this.collisionRadius, 0, Math.PI*2)
     context.save()
@@ -63,6 +83,10 @@ export class Player {
         this.speed.x = 0
         this.speed.y = 0
     }
+    this.sprite ={
+        x:this.collision.x - this.width*0.5,
+        y:this.collision.y - this.height*0.5-30
+      }
 
     //collision with obstacles
     this.game.obstacles.forEach(obstacle=>{
