@@ -42,6 +42,18 @@ export class Game {
             obstacle.draw(context)
         })
     }
+    /**
+     * @param {Object} a 
+     * @param {Object} b 
+     * 
+     */
+    checkCollision(a,b){
+        const dx = a.collision.x - b.collision.x;
+        const dy = a.collision.y - b.collision.y
+        const distance = Math.hypot(dy,dx)
+        const sumOfRadi = a.collisionRadius + b.collisionRadius
+        return (distance <sumOfRadi)
+    }
     init(){
         let attempts = 0
         while(this.obstacles.length <this.numberOfObstacle &&  attempts<this.MAX_ATTEMPTS){

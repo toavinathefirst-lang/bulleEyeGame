@@ -63,5 +63,13 @@ export class Player {
         this.speed.x = 0
         this.speed.y = 0
     }
+
+    //collision with obstacles
+    this.game.obstacles.forEach(obstacle=>{
+      if(this.game.checkCollision(this,obstacle)){
+        console.log(this.game.checkCollision(this,obstacle));
+        
+      }
+    })
   }
 }
