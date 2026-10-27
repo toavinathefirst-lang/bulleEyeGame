@@ -9,7 +9,7 @@ export class Obstacle{
      */
     constructor(game){
         this.game=game;
-         this.collisionRadius  = 40;
+         this.collisionRadius  = 80;
         this.collision = {
             x:this.collisionRadius + Math.random() * (this.game.width - this.collisionRadius*2),
             y:this.collisionRadius + Math.random() * (this.game.height - this.collisionRadius*2)

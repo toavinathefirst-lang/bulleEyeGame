@@ -85,7 +85,7 @@ export class Game {
                     overlap = true
                 }
             })
-            const margin = testObstacle.collisionRadius * 2
+            const margin = testObstacle.collisionRadius * 3
             if (!overlap && testObstacle.sprite.x > 0 &&
                 testObstacle.sprite.x < this.width - testObstacle.width &&
                 testObstacle.collision.y > this.TOPMARGIN && testObstacle.collision.y < this.TOPMARGIN + margin &&

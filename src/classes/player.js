@@ -11,7 +11,7 @@ export class Player {
             x: game.width * 0.5,
             y: game.height * 0.5
         }
-        this.collisionRadius = 80
+        this.collisionRadius = 30
 
         this.angle = 0
         this.lineLength = 80
@@ -31,10 +31,36 @@ export class Player {
             x: 0,
             y: 0
         }
+        this.spriteOffsetY = 80
         this.sprite = {
-            x: this.collision.x - this.width * 0.5,
-            y: this.collision.y - this.height * 0.5 - 30
+            x: 0,
+            y: 0
         }
+
+        this.horizontalBoundaries()
+        this.verticalBoundary()
+        this.updateSprite()
+    }
+
+    horizontalBoundaries() {
+        if (this.collision.x < this.collisionRadius) {
+            this.collision.x = this.collisionRadius
+        } else if (this.collision.x > this.game.width - this.collisionRadius) {
+            this.collision.x = this.game.width - this.collisionRadius
+        }
+    }
+
+    verticalBoundary() {
+        if (this.collision.y < this.game.TOPMARGIN + this.collisionRadius) {
+            this.collision.y = this.game.TOPMARGIN + this.collisionRadius
+        } else if (this.collision.y > this.game.height - this.collisionRadius) {
+            this.collision.y = this.game.height - this.collisionRadius
+        }
+    }
+
+    updateSprite() {
+        this.sprite.x = this.collision.x - this.width * 0.5
+        this.sprite.y = this.collision.y - this.height * 0.5 - this.spriteOffsetY
     }
 
     /**
@@ -125,9 +151,8 @@ export class Player {
             }
         })
 
-        this.sprite = {
-            x: this.collision.x - this.width * 0.5,
-            y: this.collision.y - this.height * 0.5 - 30
-        }
+        this.horizontalBoundaries()
+        this.verticalBoundary()
+        this.updateSprite()
     }
 }
