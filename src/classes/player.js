@@ -11,7 +11,7 @@ export class Player {
             x: game.width * 0.5,
             y: game.height * 0.5
         }
-        this.collisionRadius = 30
+        this.collisionRadius = 45
 
         this.angle = 0
         this.lineLength = 80

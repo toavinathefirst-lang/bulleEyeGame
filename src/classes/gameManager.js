@@ -1,6 +1,11 @@
 import { Player } from "./player"
 import { Obstacle } from "./obstacle"
 
+/**
+ * @typedef {Object} Drawable
+ * @property {{ x: number, y: number }} collision
+ * @property {(context: CanvasRenderingContext2D) => void} draw
+ */
 
 export class Game {
     /** @param {HTMLCanvasElement} canvas */
@@ -13,11 +18,19 @@ export class Game {
 
         this.mouse = { x: this.width * 0.5, y: this.height * 0.5, dx: 0, dy: 0, pressed: false }
         this.player = new Player(this)
+
+        this.timer=0
+        this.fps = 25;
+        this.interval= 1000/this.fps;
+
         this.numberOfObstacle = 5
         this.MAX_ATTEMPTS = 200
 
         /** @type {Obstacle[]} */
         this.obstacles = []
+
+        /** @type {Drawable[]} */
+        this.enemies = []
 
         /** @param {MouseEvent} e */
         const updatePos = (e) => {
@@ -43,15 +56,27 @@ export class Game {
     }
 
     /**
+     * @returns {Drawable[]}
+     */
+    getDrawables() {
+        return [this.player, ...this.obstacles, ...this.enemies]
+    }
+
+    /**
      * @param {CanvasRenderingContext2D} context
+     * @param {number} [deltatime=0]
      * @returns {void}
      */
-    render(context) {
-        this.player.update()
-        this.player.draw(context)
-        this.obstacles.forEach(obstacle => {
-            obstacle.draw(context)
-        })
+    render(context, deltatime = 0) {
+        if (this.timer > this.interval) {
+            context.clearRect(0, 0, this.width, this.height)
+            this.player.update()
+            this.getDrawables()
+                .sort((a, b) => a.collision.y - b.collision.y)
+                .forEach(drawable => drawable.draw(context))
+            this.timer = 0
+        }
+        this.timer += deltatime
     }
 
     /**
@@ -86,12 +111,13 @@ export class Game {
                 }
             })
             const margin = testObstacle.collisionRadius * 3
-            if (!overlap && testObstacle.sprite.x > 0 &&
+           if (!overlap &&
+                testObstacle.sprite.x > 0 &&
                 testObstacle.sprite.x < this.width - testObstacle.width &&
-                testObstacle.collision.y > this.TOPMARGIN && testObstacle.collision.y < this.TOPMARGIN + margin &&
-                testObstacle.collision.y < this.height - margin
-            ) {
-                this.obstacles.push(testObstacle)
+                testObstacle.collision.y > this.TOPMARGIN &&
+                testObstacle.collision.y < this.height - margin) {
+
+                    this.obstacles.push(testObstacle)
             }
             attempts++
         }

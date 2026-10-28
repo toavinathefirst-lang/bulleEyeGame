@@ -1,24 +1,33 @@
 import "./style.css"
 import { Game } from "./classes/gameManager"
-window.addEventListener("load",()=>{
+
+window.addEventListener("load", () => {
+    /** @type {HTMLCanvasElement} */
     const canvas = document.querySelector("canvas")
     const ctx = canvas.getContext("2d")
-    
-    ctx.lineWidth = 3
-    canvas.width = 1280
-    canvas.height= 720
 
-    ctx.fillStyle="white"
+    canvas.width = 1280
+    canvas.height = 720
+
+    ctx.lineWidth = 3
+    ctx.fillStyle = "white"
     ctx.strokeStyle = "red"
-    
+
     const game = new Game(canvas)
     game.init()
-    game.render(ctx)
-    
-    function animate(){
-        ctx.clearRect(0,0,canvas.width,canvas.height)
-        game.render(ctx)
+
+    let lastTime = 0
+
+    /**
+     * @param {DOMHighResTimeStamp} timeStamp
+     * @returns {void}
+     */
+    function animate(timeStamp) {
+        const deltaTime = timeStamp - lastTime
+        lastTime = timeStamp
+        game.render(ctx, deltaTime)
         requestAnimationFrame(animate)
     }
-    animate()
+
+    animate(0)
 })
