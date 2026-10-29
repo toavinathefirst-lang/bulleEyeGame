@@ -1,5 +1,6 @@
 import { Player } from "./player"
 import { Obstacle } from "./obstacle"
+import { Egg } from "./egg";
 
 /**
  * @typedef {Object} Drawable
@@ -10,8 +11,13 @@ import { Obstacle } from "./obstacle"
 export class Game {
     /** @param {HTMLCanvasElement} canvas */
     constructor(canvas) {
+        /**
+         * @type {Egg[]}
+         */
         this.eggs=[]
         this.maxEggs=10;
+        this.eggTimer=0
+        this.eggInterval=1500
         this.canvas = canvas
         this.width = canvas.width
         this.height = canvas.height
@@ -61,7 +67,7 @@ export class Game {
      * @returns {Drawable[]}
      */
     getDrawables() {
-        return [this.player, ...this.obstacles, ...this.enemies]
+        return [this.player, ...this.obstacles, ...this.enemies,...this.eggs]
     }
 
     /**
@@ -79,6 +85,15 @@ export class Game {
             this.timer = 0
         }
         this.timer += deltatime
+
+        //add eggs progressively
+        if(this.eggTimer>this.eggInterval && this.eggs.length<this.maxEggs){
+            this.addEgg()
+            this.eggTimer=0
+        }else {
+            this.eggTimer+=deltatime
+        }
+
     }
 
     /**
@@ -123,8 +138,8 @@ export class Game {
             }
             attempts++
         }
-    }
+    } 
     addEgg(){
-
+        this.eggs.push(new Egg(this))
     }
 }
