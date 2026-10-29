@@ -10,6 +10,8 @@ import { Obstacle } from "./obstacle"
 export class Game {
     /** @param {HTMLCanvasElement} canvas */
     constructor(canvas) {
+        this.eggs=[]
+        this.maxEggs=10;
         this.canvas = canvas
         this.width = canvas.width
         this.height = canvas.height
@@ -121,5 +123,8 @@ export class Game {
             }
             attempts++
         }
+    }
+    addEgg(){
+
     }
 }
