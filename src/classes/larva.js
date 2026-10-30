@@ -1,4 +1,5 @@
 
+import { fireFly } from "./fireFly";
 import { Game } from "./gameManager";
 
 export class larva {
@@ -89,7 +90,10 @@ export class larva {
             this.markedForDeletion = true;
             this.game.removeGameObjects()
             this.game.score++
-            console.log("Score:"+this.game.score );
+            for (let index = 0; index < 3   ; index++) {
+                this.game.particles.push(new fireFly(this.game,this.collision.x,this.collision.y,"yellow"))
+            }
+            
                     
         }
 

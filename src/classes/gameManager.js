@@ -3,6 +3,7 @@ import { Obstacle } from "./obstacle"
 import { Egg } from "./egg";
 import { Enemy } from "./enemie";
 import { larva } from "./larva";
+import { Particle } from "./particle";
 
 /**
  * @typedef {Object} Drawable
@@ -17,6 +18,10 @@ export class Game {
          * @type {Egg[]}
          */
         this.eggs=[]
+        /**
+         * @type {Particle[]}
+         */
+        this.particles=[]
         this.maxEggs=10;
         this.eggTimer=0
         this.eggInterval=1500
@@ -75,7 +80,8 @@ export class Game {
      * @returns {Drawable[]}
      */
     getDrawables() {
-        return [this.player, ...this.obstacles, ...this.enemies,...this.eggs,...this.hatchlings]
+        return [this.player, ...this.obstacles, 
+            ...this.enemies,...this.eggs,...this.hatchlings,...this.particles]
     }
     addEnemy() {
         this.enemies.push(new Enemy(this))
@@ -105,6 +111,7 @@ export class Game {
             this.eggs.forEach(egg => egg.update(elapsed))
             this.enemies.forEach(enemy => enemy.update())
             this.hatchlings.forEach(hatchling => hatchling.update())
+            this.particles.forEach(particle => particle.update())
         }
         this.timer += deltatime
 
