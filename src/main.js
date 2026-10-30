@@ -33,4 +33,5 @@ window.addEventListener("load", async() => {
     }
 
     animate(0)
+    
 })

@@ -72,11 +72,32 @@ export class Game {
             if(e.key == "d"){
                 this.debug= !this.debug
             }
+            if ((e.key == "r" || e.key == "R") && this.gameOver) {
+                this.restart()
+            }
             
             
         })
     }
+    /**
+ * @returns {void}
+ */
+    restart() {
+        this.score = 0
+        this.lostHatching = 0
+        this.gameOver = false
+        this.timer = 0
+        this.eggTimer = 0
 
+        this.eggs = []
+        this.hatchlings = []
+        this.particles = []
+        this.enemies = []
+        this.obstacles = []
+
+        this.player.restart()
+        this.init()
+    }
     /**
      * @returns {Drawable[]}
      */

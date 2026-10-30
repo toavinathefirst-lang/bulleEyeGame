@@ -41,6 +41,15 @@ export class Player {
         this.verticalBoundary()
         this.updateSprite()
     }
+    restart(){
+         this.collision.x = this.game.width * 0.5
+        this.collision.y = this.game.height * 0.5
+        this.speed.x = 0
+        this.speed.y = 0
+        this.angle = 0
+        this.frame.y = 0
+        this.updateSprite()
+    }
 
     horizontalBoundaries() {
         if (this.collision.x < this.collisionRadius) {
