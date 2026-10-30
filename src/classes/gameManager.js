@@ -116,6 +116,15 @@ export class Game {
             this.eggTimer+=deltatime
         }
 
+        //status check
+        context.save()
+        context.textAlign = "left"
+        context.fillText(`Score:${this.score}`,25,50)
+        if(this.debug){
+            context.fillText(`Lost:${this.lostHatching}`,25,100)
+        }
+        context.restore()
+
     }
 
     /**
