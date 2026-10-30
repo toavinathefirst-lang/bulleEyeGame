@@ -26,10 +26,11 @@ export class Particle {
      * @param {CanvasRenderingContext2D} context 
      */
     draw(context){
+        if (this.radius <= 0) return
         context.save()
-        context.fillStyle =  this.color;
+        context.fillStyle = this.color
         context.beginPath()
-        context.arc(this.collision.x,this.collision.y,this.radius,0,Math.PI*2)
+        context.arc(this.collision.x, this.collision.y, this.radius, 0, Math.PI * 2)
         context.fill()
         context.restore()
     }

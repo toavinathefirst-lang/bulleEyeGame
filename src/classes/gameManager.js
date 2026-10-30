@@ -89,6 +89,7 @@ export class Game {
     removeGameObjects(){
         this.eggs=this.eggs.filter(object => !object.markedForDeletion)
         this.hatchlings=this.hatchlings.filter(object => !object.markedForDeletion)
+        this.particles = this.particles.filter(object => !object.markedForDeletion)
     }
     /**
      * @param {CanvasRenderingContext2D} context

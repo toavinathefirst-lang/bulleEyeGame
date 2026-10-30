@@ -1,6 +1,7 @@
 
 import { fireFly } from "./fireFly";
 import { Game } from "./gameManager";
+import { Spark } from "./spark";
 
 export class larva {
     /**
@@ -90,9 +91,10 @@ export class larva {
             this.markedForDeletion = true;
             this.game.removeGameObjects()
             this.game.score++
-            for (let index = 0; index < 3   ; index++) {
+            for (let index = 0; index < 8   ; index++) {
                 this.game.particles.push(new fireFly(this.game,this.collision.x,this.collision.y,"yellow"))
             }
+            return
             
                     
         }
@@ -110,17 +112,17 @@ export class larva {
         })
 
         //collision with enemies 
-        this.game.enemies.forEach(enemy=>{
-            if(this.game.checkCollision(this,enemy)[0]){
-                this.markedForDeletion = true
-                this.game.removeGameObjects()
-                this.game.lostHatching++
-                if(this.game.score > 0){
-                    this.game.score --
-                    console.log("Score:"+this.game.score + "larve perdue:" +this.game.lostHatching);
-                    
-                }
+       const hit = this.game.enemies.some(enemy => this.game.checkCollision(this, enemy)[0])
+        if (hit) {
+            this.markedForDeletion = true
+            this.game.removeGameObjects()
+            this.game.lostHatching++
+            for (let index = 0; index < 5; index++) {
+                this.game.particles.push(new Spark(this.game, this.collision.x, this.collision.y, "blue"))
             }
-        })
+            if (this.game.score > 0) {
+                this.game.score--
+            }
+        }
     }
 }
