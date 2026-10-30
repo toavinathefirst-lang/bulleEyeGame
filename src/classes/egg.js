@@ -41,21 +41,49 @@ export class Egg {
             context.stroke()
         }
     }
-    update(){
+
+    /**
+     * @returns {void}
+     */
+    update() {
+        const collisionObject = [this.game.player, ...this.game.obstacles]
+        collisionObject.forEach(object => {
+            const [collision, distance, sumOfRadi, dx, dy] = this.game.checkCollision(this, object)
+            if (collision && distance > 0) {
+                const unit = { x: dx / distance, y: dy / distance }
+                this.collision.x = object.collision.x + (sumOfRadi + 1) * unit.x
+                this.collision.y = object.collision.y + (sumOfRadi + 1) * unit.y
+            }
+        })
+
+        this.keepInBounds()
+
         this.sprite = {
             x: this.collision.x - this.width * 0.5,
             y: this.collision.y - this.height * 0.5 - 30
         }
-        let collisionObject = [this.game.player,...this.game.obstacles]
-        collisionObject.forEach(object=>{
-            let  [collision, distance, sumOfRadi, dx, dy] = this.game.checkCollision(this,object);
-            if(collision){
-                const unit= {
-                    x:dx/distance,
-                    y:dy/distance
-                }
-                this.collision.x = object.collision.x + (sumOfRadi +1) * unit.x
-                this.collision.y = object.collision.y+ (sumOfRadi +1) * unit.y            }
-        })
+    }
+
+    /**
+     * Remet l'œuf dans la map s'il touche ou dépasse un bord (gauche, droite, bas)
+     * et le décale légèrement vers l'intérieur.
+     * @returns {void}
+     */
+    keepInBounds() {
+        const push = 3
+        const r = this.collisionRadius
+        const g = this.game
+
+        const left = r
+        const right = g.width - r
+        const bottom = g.height - r
+        const top = g.TOPMARGIN + r
+
+        if (this.collision.x <= left) this.collision.x = left + push
+        else if (this.collision.x >= right) this.collision.x = right - push
+
+        if (this.collision.y >= bottom) this.collision.y = bottom - push
+
+        if (this.collision.y < top) this.collision.y = top
     }
 }

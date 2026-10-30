@@ -80,7 +80,7 @@ export class Game {
             context.clearRect(0, 0, this.width, this.height)
             this.player.update()
             this.getDrawables()
-                .sort((a, b) => a.collision.y - b.collision.y)
+                .sort((a, b) => a.collision.y - b.collision.y || (a === this.player ? 1 : b === this.player ? -1 : 0)) 
                 .forEach(drawable => drawable.draw(context))
             this.timer = 0
             this.eggs.forEach(egg => egg.update())
