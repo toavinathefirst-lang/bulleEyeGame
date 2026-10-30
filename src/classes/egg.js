@@ -42,6 +42,20 @@ export class Egg {
         }
     }
     update(){
-        
+        this.sprite = {
+            x: this.collision.x - this.width * 0.5,
+            y: this.collision.y - this.height * 0.5 - 30
+        }
+        let collisionObject = [this.game.player,...this.game.obstacles]
+        collisionObject.forEach(object=>{
+            let  [collision, distance, sumOfRadi, dx, dy] = this.game.checkCollision(this,object);
+            if(collision){
+                const unit= {
+                    x:dx/distance,
+                    y:dy/distance
+                }
+                this.collision.x = object.collision.x + (sumOfRadi +1) * unit.x
+                this.collision.y = object.collision.y+ (sumOfRadi +1) * unit.y            }
+        })
     }
 }

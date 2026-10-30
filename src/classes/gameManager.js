@@ -83,6 +83,7 @@ export class Game {
                 .sort((a, b) => a.collision.y - b.collision.y)
                 .forEach(drawable => drawable.draw(context))
             this.timer = 0
+            this.eggs.forEach(egg => egg.update())
         }
         this.timer += deltatime
 
