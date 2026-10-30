@@ -46,7 +46,7 @@ export class Egg {
      * @returns {void}
      */
     update() {
-        const collisionObject = [this.game.player, ...this.game.obstacles]
+        const collisionObject = [this.game.player, ...this.game.obstacles,...this.game.enemies]
         collisionObject.forEach(object => {
             const [collision, distance, sumOfRadi, dx, dy] = this.game.checkCollision(this, object)
             if (collision && distance > 0) {

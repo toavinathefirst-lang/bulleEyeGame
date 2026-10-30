@@ -1,6 +1,7 @@
 import { Player } from "./player"
 import { Obstacle } from "./obstacle"
 import { Egg } from "./egg";
+import { Enemy } from "./enemie";
 
 /**
  * @typedef {Object} Drawable
@@ -37,7 +38,7 @@ export class Game {
         /** @type {Obstacle[]} */
         this.obstacles = []
 
-        /** @type {Drawable[]} */
+        /** @type {Enemy[]} */
         this.enemies = []
 
         /** @param {MouseEvent} e */
@@ -69,7 +70,9 @@ export class Game {
     getDrawables() {
         return [this.player, ...this.obstacles, ...this.enemies,...this.eggs]
     }
-
+    addEnemy() {
+        this.enemies.push(new Enemy(this))
+    }
     /**
      * @param {CanvasRenderingContext2D} context
      * @param {number} [deltatime=0]
@@ -81,9 +84,13 @@ export class Game {
             this.player.update()
             this.getDrawables()
                 .sort((a, b) => a.collision.y - b.collision.y || (a === this.player ? 1 : b === this.player ? -1 : 0)) 
-                .forEach(drawable => drawable.draw(context))
+                .forEach(drawable => {
+                    drawable.draw(context)
+                
+                })
             this.timer = 0
             this.eggs.forEach(egg => egg.update())
+            this.enemies.forEach(enemy => enemy.update())
         }
         this.timer += deltatime
 
@@ -114,6 +121,10 @@ export class Game {
      * @returns {void}
      */
     init() {
+        for (let i = 0; i < 4; i++) {
+            this.addEnemy()
+            
+        }
         let attempts = 0
         while (this.obstacles.length < this.numberOfObstacle && attempts < this.MAX_ATTEMPTS) {
             let testObstacle = new Obstacle(this)
