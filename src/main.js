@@ -1,7 +1,8 @@
 import "./style.css"
 import { Game } from "./classes/gameManager"
 
-window.addEventListener("load", () => {
+window.addEventListener("load", async() => {
+    await document.fonts.load("40px Bangers")
     /** @type {HTMLCanvasElement} */
     const canvas = document.querySelector("canvas")
     const ctx = canvas.getContext("2d")

@@ -5,6 +5,7 @@ export class Enemy {
      * @param {Game} game
      */
     constructor(game) {
+        
         this.game = game
         this.collisionRadius = 30
         this.collision = {
@@ -67,7 +68,7 @@ export class Enemy {
     update() {
         this.collision.x -= this.speed.x
 
-        if (this.collision.x + this.width * 0.5 < 0) {
+        if (this.collision.x + this.width * 0.5 < 0 && !this.game.gameOver) {
             this.collision.x = this.game.width + Math.random() * this.game.width * 0.5
             this.collision.y = this.game.TOPMARGIN + Math.random() * (this.game.height - this.game.TOPMARGIN)
         }

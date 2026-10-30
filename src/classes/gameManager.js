@@ -23,6 +23,7 @@ export class Game {
          */
         this.particles=[]
         this.maxEggs=10;
+        this.gameOver=false
         this.eggTimer=0
         this.eggInterval=1500
         this.canvas = canvas
@@ -32,7 +33,7 @@ export class Game {
         this.debug = false
         this.lostHatching = 0
         this.score=0
-
+        this.winningScore=1
         this.mouse = { x: this.width * 0.5, y: this.height * 0.5, dx: 0, dy: 0, pressed: false }
         this.player = new Player(this)
 
@@ -96,43 +97,71 @@ export class Game {
      * @param {number} [deltatime=0]
      * @returns {void}
      */
+    /**
+     * @param {CanvasRenderingContext2D} context
+     * @param {number} [deltatime=0]
+     * @returns {void}
+     */
     render(context, deltatime = 0) {
-        
         if (this.timer > this.interval) {
             const elapsed = this.timer
             context.clearRect(0, 0, this.width, this.height)
             this.player.update()
             this.getDrawables()
-                .sort((a, b) => a.collision.y - b.collision.y || (a === this.player ? 1 : b === this.player ? -1 : 0)) 
+                .sort((a, b) => a.collision.y - b.collision.y || (a === this.player ? 1 : b === this.player ? -1 : 0))
                 .forEach(drawable => {
                     drawable.draw(context)
-                
                 })
+
+            //status check
+            context.save()
+            context.textAlign = "left"
+            context.fillText(`Score:${this.score}`, 25, 50)
+            if (this.debug) {
+                context.font = "40px Helvetica"
+                context.fillText(`Lost:${this.lostHatching}`, 25, 100)
+            }
+            context.restore()
+
+            //win lose message
+            if (this.score >= this.winningScore) {
+                this.gameOver=true
+                context.save()
+                context.fillStyle = "rgba(0,0,0,0.5)"
+                context.fillRect(0, 0, this.width, this.height)
+                context.fillStyle = "white"
+                context.textAlign = "center"
+                let message
+                const winningMessage = "Congratulation !!!"
+                const losingMessage = "sadly , too many larva was dead "
+                if (this.lostHatching <= 5) {
+                    message = winningMessage
+                } else {
+                    message = losingMessage
+                }
+                context.font = "130px Bangers, Helvetica"
+                context.fillText(message, this.width * 0.5, this.height * 0.5-20)
+                context.fillText("press R to Restart", this.width * 0.5, this.height * 0.5+80)
+                context.restore()
+            }
+
             this.timer = 0
-            this.eggs.forEach(egg => egg.update(elapsed))
-            this.enemies.forEach(enemy => enemy.update())
-            this.hatchlings.forEach(hatchling => hatchling.update())
-            this.particles.forEach(particle => particle.update())
+            if (!this.gameOver) {
+                this.eggs.forEach(egg => egg.update(elapsed))
+                this.enemies.forEach(enemy => enemy.update())
+                this.hatchlings.forEach(hatchling => hatchling.update())
+                this.particles.forEach(particle => particle.update())
+            }
         }
         this.timer += deltatime
 
         //add eggs progressively
-        if(this.eggTimer>this.eggInterval && this.eggs.length<this.maxEggs){
+        if (this.eggTimer > this.eggInterval && this.eggs.length < this.maxEggs && !this.gameOver) {
             this.addEgg()
-            this.eggTimer=0
-        }else {
-            this.eggTimer+=deltatime
+            this.eggTimer = 0
+        } else {
+            this.eggTimer += deltatime
         }
-
-        //status check
-        context.save()
-        context.textAlign = "left"
-        context.fillText(`Score:${this.score}`,25,50)
-        if(this.debug){
-            context.fillText(`Lost:${this.lostHatching}`,25,100)
-        }
-        context.restore()
-
     }
 
     /**

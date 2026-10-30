@@ -90,7 +90,7 @@ export class larva {
         if( this.collision.y<this.game.TOPMARGIN){
             this.markedForDeletion = true;
             this.game.removeGameObjects()
-            this.game.score++
+            if(!this.game.gameOver) this.game.score++
             for (let index = 0; index < 8   ; index++) {
                 this.game.particles.push(new fireFly(this.game,this.collision.x,this.collision.y,"yellow"))
             }
@@ -120,7 +120,7 @@ export class larva {
             for (let index = 0; index < 5; index++) {
                 this.game.particles.push(new Spark(this.game, this.collision.x, this.collision.y, "blue"))
             }
-            if (this.game.score > 0) {
+            if (this.game.score > 0  && !this.game.gameOver) {
                 this.game.score--
             }
         }
