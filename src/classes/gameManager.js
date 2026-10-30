@@ -2,6 +2,7 @@ import { Player } from "./player"
 import { Obstacle } from "./obstacle"
 import { Egg } from "./egg";
 import { Enemy } from "./enemie";
+import { larva } from "./larva";
 
 /**
  * @typedef {Object} Drawable
@@ -40,6 +41,10 @@ export class Game {
 
         /** @type {Enemy[]} */
         this.enemies = []
+        /**
+         * @type {larva[]}
+         */
+        this.hatchlings = []
 
         /** @param {MouseEvent} e */
         const updatePos = (e) => {
@@ -68,10 +73,14 @@ export class Game {
      * @returns {Drawable[]}
      */
     getDrawables() {
-        return [this.player, ...this.obstacles, ...this.enemies,...this.eggs]
+        return [this.player, ...this.obstacles, ...this.enemies,...this.eggs,...this.hatchlings]
     }
     addEnemy() {
         this.enemies.push(new Enemy(this))
+    }
+    removeGameObjects(){
+        this.eggs=this.eggs.filter(object => !object.markedForDeletion)
+        this.hatchlings=this.hatchlings.filter(object => !object.markedForDeletion)
     }
     /**
      * @param {CanvasRenderingContext2D} context
@@ -80,6 +89,7 @@ export class Game {
      */
     render(context, deltatime = 0) {
         if (this.timer > this.interval) {
+            const elapsed = this.timer
             context.clearRect(0, 0, this.width, this.height)
             this.player.update()
             this.getDrawables()
@@ -89,8 +99,9 @@ export class Game {
                 
                 })
             this.timer = 0
-            this.eggs.forEach(egg => egg.update())
+            this.eggs.forEach(egg => egg.update(elapsed))
             this.enemies.forEach(enemy => enemy.update())
+            this.hatchlings.forEach(hatchling => hatchling.update())
         }
         this.timer += deltatime
 

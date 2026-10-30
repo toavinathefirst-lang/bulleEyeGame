@@ -12,6 +12,8 @@ window.addEventListener("load", () => {
     ctx.lineWidth = 3
     ctx.fillStyle = "white"
     ctx.strokeStyle = "red"
+    ctx.font= '40px Helvetica'
+    ctx.textAlign = "center"
 
     const game = new Game(canvas)
     game.init()

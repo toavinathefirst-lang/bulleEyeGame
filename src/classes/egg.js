@@ -1,4 +1,5 @@
 import { Game } from "./gameManager";
+import { larva } from "./larva";
 
 export class Egg {
     /**
@@ -23,7 +24,10 @@ export class Egg {
             x: this.collision.x - this.width * 0.5,
             y: this.collision.y - this.height * 0.5 - 30
         }
-    }
+        this.hatchTimer=0;
+        this.hatchInterval = 3000
+        this.markedForDeletion = false;
+        }
 
     /**
      * @param {CanvasRenderingContext2D} context
@@ -39,14 +43,16 @@ export class Egg {
             context.fill()
             context.restore()
             context.stroke()
+            const dispplayTime= (this.hatchTimer*0.001).toFixed(0)
+            context.fillText(dispplayTime,this.collision.x,this.collision.y - this.collisionRadius *2.5)
         }
     }
 
     /**
      * @returns {void}
      */
-    update() {
-        const collisionObject = [this.game.player, ...this.game.obstacles,...this.game.enemies]
+    update(deltatime) {
+        const collisionObject = [this.game.player, ...this.game.obstacles,...this.game.enemies,...this.game.hatchlings]
         collisionObject.forEach(object => {
             const [collision, distance, sumOfRadi, dx, dy] = this.game.checkCollision(this, object)
             if (collision && distance > 0) {
@@ -61,6 +67,15 @@ export class Egg {
         this.sprite = {
             x: this.collision.x - this.width * 0.5,
             y: this.collision.y - this.height * 0.5 - 30
+        }
+
+        //hatching 
+        if(this.hatchTimer>this.hatchInterval){
+            this.game.hatchlings.push(new larva(this.game,this.collision.x,this.collision.y))
+            this.markedForDeletion=true
+            this.game.removeGameObjects()
+        }else{
+            this.hatchTimer += deltatime
         }
     }
 
