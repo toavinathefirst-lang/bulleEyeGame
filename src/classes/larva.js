@@ -1,3 +1,4 @@
+
 import { Game } from "./gameManager";
 
 export class larva {
@@ -32,7 +33,7 @@ export class larva {
             y: Math.floor(Math.random() * 2)
         }
         this.frameTimer = 0
-        this.frameInterval = 3
+        this.frameInterval = 3.5
 
         this.speed = {
             y: 1.5 + Math.random()
@@ -87,6 +88,9 @@ export class larva {
         if( this.collision.y<this.game.TOPMARGIN){
             this.markedForDeletion = true;
             this.game.removeGameObjects()
+            this.game.score++
+            console.log("Score:"+this.game.score );
+                    
         }
 
         let collisionObjects = [this.game.player, ...this.game.obstacles]
@@ -98,6 +102,20 @@ export class larva {
                 }
                 this.collision.x=object.collision.x + (sumOfRadi + 1) * unit.x
                 this.collision.y=object.collision.y + (sumOfRadi + 1) * unit.y
+            }
+        })
+
+        //collision with enemies 
+        this.game.enemies.forEach(enemy=>{
+            if(this.game.checkCollision(this,enemy)[0]){
+                this.markedForDeletion = true
+                this.game.removeGameObjects()
+                this.game.lostHatching++
+                if(this.game.score > 0){
+                    this.game.score --
+                    console.log("Score:"+this.game.score + "larve perdue:" +this.game.lostHatching);
+                    
+                }
             }
         })
     }

@@ -25,6 +25,8 @@ export class Game {
         this.height = canvas.height
         this.TOPMARGIN = 260
         this.debug = false
+        this.lostHatching = 0
+        this.score=0
 
         this.mouse = { x: this.width * 0.5, y: this.height * 0.5, dx: 0, dy: 0, pressed: false }
         this.player = new Player(this)
@@ -88,6 +90,7 @@ export class Game {
      * @returns {void}
      */
     render(context, deltatime = 0) {
+        
         if (this.timer > this.interval) {
             const elapsed = this.timer
             context.clearRect(0, 0, this.width, this.height)
