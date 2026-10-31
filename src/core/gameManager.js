@@ -4,10 +4,17 @@ import { Player } from "../entities/player"
 import { Obstacle } from "../entities/obstacle"
 import { Egg } from "../entities/egg"
 import { Enemy } from "../entities/enemie"
+import { SoundManager } from "./audioManager"
+
+import scoreUrl from "../assets/audio/LarvaReached.mp3"
+import die from "../assets/audio/die.mp3"
+import win from "../assets/audio/Win.mp3"
+import hit from "../assets/audio/hit.mp3"
 
 /**
- * @typedef {import("./gameObject").GameObject} GameObject
+ * @typedef {import("../entities/gameObject").GameObject} GameObject
  */
+
 
 export class Game {
     /** @param {HTMLCanvasElement} canvas */
@@ -16,6 +23,12 @@ export class Game {
         this.width = canvas.width
         this.height = canvas.height
         this.TOPMARGIN = CONFIG.TOP_MARGIN
+
+        this.sound = new SoundManager()
+        this.sound.load("score", scoreUrl)
+        this.sound.load("lose",die)
+        this.sound.load("win",win)
+        this.sound.load("hit",hit)
 
         this.debug = false
         this.gameOver = false
@@ -133,17 +146,28 @@ export class Game {
     // ================= Règles du jeu =================
 
     addScore() {
-        if (!this.gameOver) this.score++
+        if (!this.gameOver) {
+            this.sound.play("score")
+            this.score++
+        
+        }
     }
 
     loseHatchling() {
+        this.sound.play("hit")
         this.lostHatching++
         if (this.score > 0 && !this.gameOver) this.score--
     }
 
+    hasWon() {
+        return this.score >= CONFIG.WINNING_SCORE
+    }
+
     checkGameOver() {
-        if (this.score >= CONFIG.WINNING_SCORE || this.lostHatching > CONFIG.MAX_LOST_HATCHLINGS) {
+        if (this.gameOver) return
+        if (this.hasWon() || this.lostHatching > CONFIG.MAX_LOST_HATCHLINGS) {
             this.gameOver = true
+            this.sound.play(this.hasWon() ? "win" : "lose")
         }
     }
 
@@ -215,7 +239,7 @@ export class Game {
     }
 
     getEndMessage() {
-        return this.lostHatching <= CONFIG.PERFECT_LOST_LIMIT
+        return this.hasWon()
             ? "Congratulation !!!"
             : "be careful next time"
     }
