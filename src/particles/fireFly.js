@@ -1,8 +1,9 @@
+import { Game } from "../core/gameManager";
 import { Particle } from "./particle";
 
 export class fireFly extends Particle {
     /**
-     * @param {import("./gameManager").Game} game
+     * @param {Game} game
      * @param {number} x
      * @param {number} y
      * @param {string} color
@@ -22,7 +23,7 @@ export class fireFly extends Particle {
 
         if (this.collision.y < 0 - this.radius) {
             this.markedForDeletion = true
-            this.game.removeGameObjects()
+            
         }
     }
 }

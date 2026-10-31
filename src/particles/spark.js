@@ -1,8 +1,9 @@
+import { Game } from "../core/gameManager";
 import { Particle } from "./particle";
 
 export class Spark extends Particle {
     /**
-     * @param {import("./gameManager").Game} game
+     * @param {Game} game
      * @param {number} x
      * @param {number} y
      * @param {string} color
@@ -35,7 +36,7 @@ export class Spark extends Particle {
         this.radius = Math.max(0, this.radius - this.shrink)
         if (this.radius <= 0.2) {
             this.markedForDeletion = true
-            this.game.removeGameObjects()
+            
         }
     }
 }

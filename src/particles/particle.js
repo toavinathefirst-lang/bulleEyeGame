@@ -1,4 +1,4 @@
-import { Game } from "./gameManager";
+import { Game } from "../core/gameManager"
 
 export class Particle {
     /**

@@ -1,5 +1,5 @@
 import "./style.css"
-import { Game } from "./classes/gameManager"
+import { Game } from "./core/gameManager"
 
 window.addEventListener("load", async() => {
     await document.fonts.load("40px Bangers")
